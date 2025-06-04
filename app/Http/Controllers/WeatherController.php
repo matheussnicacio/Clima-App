@@ -9,13 +9,12 @@ class WeatherController extends Controller
 {
     public function index()
     {
-        // Exibe a página inicial
         return view('weather.index');
     }
 
     public function getWeather(Request $request)
     {
-        // Valida se a cidade foi informada
+
         $request->validate([
             'city' => 'required|string|max:255'
         ]);
@@ -24,7 +23,6 @@ class WeatherController extends Controller
         $apiKey = env('WEATHER_API_KEY');
         $apiUrl = env('WEATHER_API_URL');
 
-        // Debug: verificar se as variáveis estão sendo carregadas
         if (!$apiKey) {
             return back()->with('error', 'Chave da API não configurada. Verifique o arquivo .env');
         }
@@ -34,10 +32,9 @@ class WeatherController extends Controller
         }
 
         try {
-            // Monta a URL da API
+            
             $url = "http://api.openweathermap.org/data/2.5/weather?q=" . urlencode($city . ',BR') . "&appid=" . $apiKey . "&units=metric&lang=pt_br";
             
-            // Usar cURL para fazer a requisição
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -45,7 +42,7 @@ class WeatherController extends Controller
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-            // Desabilitar proxy
+
             curl_setopt($ch, CURLOPT_PROXY, '');
             curl_setopt($ch, CURLOPT_NOPROXY, '*');
             
@@ -65,7 +62,6 @@ class WeatherController extends Controller
                     return back()->with('error', 'Dados inválidos recebidos da API.');
                 }
                 
-                // Organiza os dados para enviar para a view
                 $data = [
                     'city' => $weatherData['name'] ?? $city,
                     'country' => $weatherData['sys']['country'] ?? 'BR',
