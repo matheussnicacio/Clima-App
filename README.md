@@ -48,7 +48,6 @@ Este projeto foi criado como um exercício prático de desenvolvimento web, demo
 ### Servidor
 - **XAMPP** - Ambiente de desenvolvimento local
 - **Apache** - Servidor web
-- **MySQL** - Banco de dados (não utilizado neste projeto)
 
 ## ✨ Funcionalidades
 
