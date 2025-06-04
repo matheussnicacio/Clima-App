@@ -76,7 +76,6 @@ class WeatherController extends Controller
 
                 return view('weather.result', compact('data'));
             } else {
-                // Tratamento de erros com mensagens mais amigáveis
                 if ($httpCode == 401) {
                     $errorMessage = 'Chave da API inválida. Entre em contato com o administrador.';
                 } elseif ($httpCode == 404) {
