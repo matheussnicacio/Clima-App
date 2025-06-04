@@ -4,7 +4,7 @@ Uma aplicação web simples e moderna desenvolvida em Laravel para consultar inf
 
 ## 📋 Sumário
 
-- [Sobre o Projeto](#sobre-o-projeto)
+- Sobre o Projeto
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Funcionalidades](#funcionalidades)
 - [Pré-requisitos](#pré-requisitos)
@@ -15,7 +15,7 @@ Uma aplicação web simples e moderna desenvolvida em Laravel para consultar inf
 - [Resolução de Problemas](#resolução-de-problemas)
 - [Arquitetura da Solução](#arquitetura-da-solução)
 
-## 🎯 Sobre o Projeto [Sobre o Projeto](#sobre-o-projeto)
+## 🎯 Sobre o Projeto 
 
 O **Clima Brasil** é uma aplicação web que permite aos usuários consultar informações meteorológicas atuais de qualquer cidade brasileira. A aplicação consome dados da API gratuita do OpenWeatherMap e apresenta as informações de forma clara e intuitiva através de uma interface moderna e responsiva.
 
@@ -296,27 +296,9 @@ php artisan serve --port=8080
 - **Documentação**: 1 hora
 - **Total**: ~5 horas
 
----
-
-## 📝 Licença
-
-Este projeto foi desenvolvido para fins educacionais e está disponível sob a licença MIT.
-
 ## 👨‍💻 Desenvolvedor
 
-Desenvolvido como exercício prático de Engenharia de Software.
-
----
-
-**🌟 Gostou do projeto? Deixe uma estrela!**
-
-
-
-
-
-
-
-
+Desenvolvido como exercício teste técnico de Engenharia de Software.
 
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
