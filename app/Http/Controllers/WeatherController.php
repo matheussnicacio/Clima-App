@@ -76,16 +76,22 @@ class WeatherController extends Controller
 
                 return view('weather.result', compact('data'));
             } else {
-                $errorMessage = 'Erro na API. ';
+                // Tratamento de erros com mensagens mais amigáveis
                 if ($httpCode == 401) {
-                    $errorMessage = 'Chave da API inválida. ';
+                    $errorMessage = 'Chave da API inválida. Entre em contato com o administrador.';
                 } elseif ($httpCode == 404) {
-                    $errorMessage = 'Cidade não encontrada. ';
+                    $errorMessage = "Ops! Não conseguimos encontrar a cidade '{$city}'. 🏙️\n\n";
+                    $errorMessage .= "Verifique se o nome está correto ou tente:\n";
+                    $errorMessage .= "• Usar o nome completo da cidade\n";
+                    $errorMessage .= "• Verificar a ortografia\n";
+                    $errorMessage .= "• Tentar uma cidade próxima conhecida";
                 } elseif ($httpCode >= 500) {
-                    $errorMessage = 'Serviço temporariamente indisponível. ';
+                    $errorMessage = 'O serviço está temporariamente indisponível. Tente novamente em alguns minutos.';
+                } else {
+                    $errorMessage = 'Ocorreu um erro inesperado. Tente novamente.';
                 }
                 
-                return back()->with('error', $errorMessage . 'Código: ' . $httpCode . '. Resposta: ' . substr($responseBody, 0, 200));
+                return back()->with('error', $errorMessage);
             }
         } catch (\Exception $e) {
             return back()->with('error', 'Erro ao buscar dados climáticos: ' . $e->getMessage());
