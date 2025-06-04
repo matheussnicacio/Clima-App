@@ -15,7 +15,7 @@ Uma aplicação web simples e moderna desenvolvida em Laravel para consultar inf
 - [Resolução de Problemas](#resolução-de-problemas)
 - [Arquitetura da Solução](#arquitetura-da-solução)
 
-## 🎯 Sobre o Projeto
+## 🎯 Sobre o Projeto [Sobre o Projeto](#sobre-o-projeto)
 
 O **Clima Brasil** é uma aplicação web que permite aos usuários consultar informações meteorológicas atuais de qualquer cidade brasileira. A aplicação consome dados da API gratuita do OpenWeatherMap e apresenta as informações de forma clara e intuitiva através de uma interface moderna e responsiva.
 
