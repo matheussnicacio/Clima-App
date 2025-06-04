@@ -5,15 +5,15 @@ Uma aplicação web simples e moderna desenvolvida em Laravel para consultar inf
 ## 📋 Sumário
 
 - Sobre o Projeto
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Funcionalidades](#funcionalidades)
-- [Pré-requisitos](#pré-requisitos)
-- [Instalação e Configuração](#instalação-e-configuração)
-- [Como Executar](#como-executar)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Como Usar](#como-usar)
-- [Resolução de Problemas](#resolução-de-problemas)
-- [Arquitetura da Solução](#arquitetura-da-solução)
+- Tecnologias Utilizadas
+- Funcionalidades
+- Pré-requisitos
+- Instalação e Configuração
+- Como Executar
+- Estrutura do Projeto
+- Como Usar
+- Resolução de Problemas
+- Arquitetura da Solução
 
 ## 🎯 Sobre o Projeto 
 
