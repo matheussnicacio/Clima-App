@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -6,24 +7,92 @@ use Illuminate\Support\Facades\Http;
 
 class WeatherController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $city = $request->input('city', 'Joinville,BR'); 
-        $apiKey = config('services.weather.key');
-        $apiUrl = config('services.weather.url');
+        // Exibe a página inicial
+        return view('weather.index');
+    }
 
-        $response = Http::get("{$apiUrl}weather", [
-            'q' => $city,
-            'appid' => $apiKey,
-            'units' => 'metric', 
-            'lang' => 'pt_br',   
+    public function getWeather(Request $request)
+    {
+        // Valida se a cidade foi informada
+        $request->validate([
+            'city' => 'required|string|max:255'
         ]);
 
-        if ($response->successful()) {
-            $weatherData = $response->json();
-            return view('weather', ['weather' => $weatherData]);
+        $city = $request->input('city');
+        $apiKey = env('WEATHER_API_KEY');
+        $apiUrl = env('WEATHER_API_URL');
+
+        // Debug: verificar se as variáveis estão sendo carregadas
+        if (!$apiKey) {
+            return back()->with('error', 'Chave da API não configurada. Verifique o arquivo .env');
         }
 
-        return view('weather', ['error' => 'Cidade não encontrada ou erro na API.']);
+        if (!$apiUrl) {
+            return back()->with('error', 'URL da API não configurada. Verifique o arquivo .env');
+        }
+
+        try {
+            // Monta a URL da API
+            $url = "http://api.openweathermap.org/data/2.5/weather?q=" . urlencode($city . ',BR') . "&appid=" . $apiKey . "&units=metric&lang=pt_br";
+            
+            // Usar cURL para fazer a requisição
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            // Desabilitar proxy
+            curl_setopt($ch, CURLOPT_PROXY, '');
+            curl_setopt($ch, CURLOPT_NOPROXY, '*');
+            
+            $responseBody = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $error = curl_error($ch);
+            curl_close($ch);
+            
+            if ($error) {
+                return back()->with('error', 'Erro de conexão: ' . $error);
+            }
+
+            if ($httpCode == 200) {
+                $weatherData = json_decode($responseBody, true);
+                
+                if (!$weatherData || !isset($weatherData['main'])) {
+                    return back()->with('error', 'Dados inválidos recebidos da API.');
+                }
+                
+                // Organiza os dados para enviar para a view
+                $data = [
+                    'city' => $weatherData['name'] ?? $city,
+                    'country' => $weatherData['sys']['country'] ?? 'BR',
+                    'temperature' => round($weatherData['main']['temp'] ?? 0),
+                    'feels_like' => round($weatherData['main']['feels_like'] ?? 0),
+                    'description' => ucfirst($weatherData['weather'][0]['description'] ?? 'N/A'),
+                    'humidity' => $weatherData['main']['humidity'] ?? 0,
+                    'pressure' => $weatherData['main']['pressure'] ?? 0,
+                    'wind_speed' => $weatherData['wind']['speed'] ?? 0,
+                    'icon' => $weatherData['weather'][0]['icon'] ?? '01d'
+                ];
+
+                return view('weather.result', compact('data'));
+            } else {
+                $errorMessage = 'Erro na API. ';
+                if ($httpCode == 401) {
+                    $errorMessage = 'Chave da API inválida. ';
+                } elseif ($httpCode == 404) {
+                    $errorMessage = 'Cidade não encontrada. ';
+                } elseif ($httpCode >= 500) {
+                    $errorMessage = 'Serviço temporariamente indisponível. ';
+                }
+                
+                return back()->with('error', $errorMessage . 'Código: ' . $httpCode . '. Resposta: ' . substr($responseBody, 0, 200));
+            }
+        } catch (\Exception $e) {
+            return back()->with('error', 'Erro ao buscar dados climáticos: ' . $e->getMessage());
+        }
     }
 }
